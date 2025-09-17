@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: ufo
+    description: documented ufo sightings across the world
+    database: cedric_turner_demo
+    schema: dbt_cturner
+    tables:
+      - name: ufo_sightings_scrubbed
+        description: ufo sightings
+        columns:
+          - name: datetime
+          - name: city
+          - name: state
+          - name: country
+          - name: shape
+          - name: duration_seconds
+          - name: duration_hours_min
+          - name: comments
+          - name: date_posted
+          - name: latitude
+          - name: longitude
