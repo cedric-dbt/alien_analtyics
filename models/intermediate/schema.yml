@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: int_ufo_sightings_cleaned
+    description: "Cleaned and standardized UFO sightings data with data quality flags"
+    columns:
+      - name: sighting_id
+        description: "Unique identifier for each sighting"
+        tests:
+          - unique
+          - not_null
+      
+      - name: sighting_datetime
+        description: "Parsed timestamp of the sighting"
+        tests:
+          - not_null
+      
+      - name: sighting_date
+        description: "Date of the sighting"
+        tests:
+          - not_null
+      
+      - name: country_standardized
+        description: "Standardized country name"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['UNITED STATES', 'CANADA', 'UNITED KINGDOM', 'AUSTRALIA', 'GERMANY', 'FRANCE', 'UNKNOWN']
+      
+      - name: has_valid_datetime
+        description: "Flag indicating if the datetime is valid"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [true, false]
+      
+      - name: has_valid_coordinates
+        description: "Flag indicating if coordinates are valid"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [true, false]
+      
+      - name: latitude_clean
+        description: "Cleaned latitude coordinate"
+        tests:
+          - dbt_utils.accepted_range:
+              config:
+                where: "latitude_clean is not null"
+              arguments:
+                min_value: -90
+                max_value: 90
+      
+      - name: longitude_clean
+        description: "Cleaned longitude coordinate"
+        tests:
+          - dbt_utils.accepted_range:
+              config:
+                where: "longitude_clean is not null"
+              arguments:
+                min_value: -180
+                max_value: 180
+
+  - name: int_ufo_location_enriched
+    description: "UFO sightings enriched with location statistics and regional groupings"
+    columns:
+      - name: sighting_id
+        description: "Unique identifier for each sighting"
+        tests:
+          - unique
+          - not_null
+      
+      - name: region
+        description: "Regional grouping for better analysis"
+        tests:
+          - not_null
+      
+      - name: city_activity_level
+        description: "Activity level categorization for the city"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['VERY HIGH ACTIVITY', 'HIGH ACTIVITY', 'MEDIUM ACTIVITY', 'LOW ACTIVITY', 'MINIMAL ACTIVITY']

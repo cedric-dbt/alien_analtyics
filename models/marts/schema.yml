@@ -1,0 +1,95 @@
+version: 2
+
+models:
+  - name: mart_ufo_sightings_by_country_time
+    description: "UFO sightings aggregated by country and time periods for dashboard consumption"
+    columns:
+      - name: country
+        description: "Standardized country name"
+        tests:
+          - not_null
+      
+      - name: region
+        description: "Regional grouping"
+        tests:
+          - not_null
+      
+      - name: time_grain
+        description: "Time aggregation level (monthly or yearly)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['monthly', 'yearly']
+      
+      - name: total_sightings
+        description: "Total number of sightings in the period"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: period_date
+        description: "Date representing the time period"
+        tests:
+          - not_null
+
+  - name: mart_ufo_top_locations
+    description: "Top UFO sighting locations with detailed metrics"
+    columns:
+      - name: location_type
+        description: "Type of location (country, state, or city)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['country', 'state', 'city']
+      
+      - name: country
+        description: "Country name"
+        tests:
+          - not_null
+      
+      - name: total_sightings
+        description: "Total sightings for this location"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+      
+      - name: global_rank
+        description: "Global ranking by sighting count"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+
+  - name: mart_ufo_dashboard_summary
+    description: "High-level summary metrics for dashboard KPIs"
+    columns:
+      - name: metric_type
+        description: "Type of summary metric"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['overall', 'by_country', 'recent_trends']
+      
+      - name: total_sightings
+        description: "Total number of sightings"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: unique_countries
+        description: "Number of unique countries"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"

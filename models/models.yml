@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_ufo_sightings
+    description: "Staging model for UFO sightings data with basic transformations"
+    columns:
+      - name: datetime
+        description: "Original datetime string from source"
+      - name: city
+        description: "City where sighting occurred"
+      - name: state
+        description: "State/province where sighting occurred"
+      - name: country
+        description: "Country where sighting occurred"
+      - name: shape
+        description: "Shape of the UFO as reported"
+      - name: duration
+        description: "Duration of sighting in seconds"
+      - name: duration_hours
+        description: "Duration hours component"
+      - name: duration_minutes
+        description: "Duration minutes component"
+      - name: comments
+        description: "Comments about the sighting"
+      - name: latitude
+        description: "Latitude coordinate"
+      - name: longitude
+        description: "Longitude coordinate"
