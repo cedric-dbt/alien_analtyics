@@ -1,0 +1,1 @@
+select * from {{ source('cedric_demo_data', 'ufo_sightings') }}
