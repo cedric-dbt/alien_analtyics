@@ -1,0 +1,102 @@
+version: 2
+
+sources:
+  - name: ufo_raw
+    description: >
+      Raw UFO sightings data and contextual datasets from Kaggle. 
+      These represent untransformed inputs used to enrich UFO analysis 
+      with environmental, aviation, and historical context.
+    database: CEDRIC_TURNER_DEMO
+    schema: UFO_RAW
+    tables:
+      - name: ufo_sightings_raw
+        description: >
+          Reported UFO sightings across the world, scraped from Kaggle. 
+          Contains metadata about the sighting, location, time, and witness comments.
+        columns:
+          - name: datetime
+            description: Timestamp of the sighting (as reported by the witness)
+          - name: city
+            description: City where the sighting occurred
+          - name: state
+            description: US state or regional subdivision
+          - name: country
+            description: Country of the sighting
+          - name: shape
+            description: Reported shape of the UFO (e.g. disk, light, triangle)
+          - name: duration_seconds
+            description: Reported duration of the sighting in seconds
+          - name: duration_hours_min
+            description: Reported duration in hours and minutes (string format)
+          - name: comments
+            description: Free-text description provided by the witness
+          - name: date_posted
+            description: Date the sighting was submitted or published
+          - name: latitude
+            description: Latitude of the sighting location
+          - name: longitude
+            description: Longitude of the sighting location
+
+      - name: weather_historical_data
+        description: >
+          Historical daily/hourly weather observations (Kaggle dataset). 
+          Used to correlate UFO sightings with visibility, cloud cover, storms, 
+          or other environmental conditions that may cause misidentifications.
+        columns:
+          - name: formatted_date
+            description: Observation timestamp
+          - name: summary
+            description: General weather condition summary (e.g., Clear, Overcast)
+          - name: precip_type
+            description: Type of precipitation, if any (e.g., rain, snow)
+          - name: temperature_c
+            description: Temperature in degrees Celsius
+          - name: apparent_temperature_c
+            description: Feels-like temperature in degrees Celsius
+          - name: humidity
+            description: Relative humidity percentage (0–1 scale if raw, else percentage)
+          - name: wind_speed_km
+            description: Wind speed in kilometers per hour
+          - name: wind_bearing_degrees
+            description: Compass bearing of wind direction (0–360 degrees)
+          - name: visibility_km
+            description: Visibility in kilometers
+          - name: loud_cover
+            description: Cloud cover percentage (0–100, possible typo in source: "cloud_cover")
+          - name: pressure_millibars
+            description: Atmospheric pressure in millibars
+          - name: daily_summary
+            description: Narrative description of daily conditions
+
+      - name: airplane_crashes_since_1908
+        description: >
+          Global dataset of airplane crashes and accidents since 1908. 
+          Provides details about the aircraft, operator, and casualties. 
+          Useful for showing how UFO reports might overlap with aviation incidents.
+        columns:
+          - name: date
+            description: Date of the crash
+          - name: time
+            description: Local time of the crash (if available)
+          - name: location
+            description: Geographic location where the crash occurred
+          - name: operator
+            description: Airline or operator of the aircraft
+          - name: flight_number
+            description: Designated flight number (if applicable)
+          - name: route
+            description: Planned route of the flight (origin–destination)
+          - name: type
+            description: Aircraft model/type involved in the crash
+          - name: registration
+            description: Tail number or registration ID of the aircraft
+          - name: cn_ln
+            description: Construction number or line number of the aircraft
+          - name: aboard
+            description: Total number of people on board
+          - name: fatalities
+            description: Number of passenger and crew fatalities
+          - name: ground
+            description: Number of people killed on the ground
+          - name: summary
+            description: Narrative summary of the crash circumstances
