@@ -1,15 +1,16 @@
 version: 2
 
 sources:
-  - name: ufo
-    description: documented ufo sightings across the world
-    database: cedric_turner_demo
-    schema: dbt_cturner
+  - name: ufo_raw
+    description: Raw UFO sightings data from Kaggle
+    database: CEDRIC_TURNER_DEMO
+    schema: UFO_RAW
     tables:
-      - name: ufo_sightings_scrubbed
-        description: ufo sightings
+      - name: ufo__sightings_raw
+        description: Raw UFO sightings across the world
         columns:
           - name: datetime
+            description: Original reported datetime of sighting
           - name: city
           - name: state
           - name: country
