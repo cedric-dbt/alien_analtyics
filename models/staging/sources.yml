@@ -62,7 +62,7 @@ sources:
           - name: visibility_km
             description: Visibility in kilometers
           - name: loud_cover
-            description: Cloud cover percentage (0–100, possible typo in source: "cloud_cover")
+            description: Cloud cover percentage (0–100, possible typo in source "cloud_cover")
           - name: pressure_millibars
             description: Atmospheric pressure in millibars
           - name: daily_summary

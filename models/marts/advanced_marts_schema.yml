@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: mart_ufo_debunking_analysis
+    description: "Analysis of UFO sightings that may be explained by aircraft incidents"
+    columns:
+      - name: analysis_type
+        description: "Type of analysis record"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['case_details', 'regional_summary', 'aircraft_correlation']
+      
+      - name: suspicion_level
+        description: "Level of suspicion for false positive"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['HIGH_SUSPICION', 'MODERATE_SUSPICION', 'LOW_SUSPICION', 'MINIMAL_SUSPICION']
+      
+      - name: evidence_strength
+        description: "Strength of debunking evidence"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['STRONG_EVIDENCE', 'MODERATE_EVIDENCE', 'WEAK_EVIDENCE', 'NO_EVIDENCE']
+
+  - name: mart_weather_aviation_safety
+    description: "Analysis of weather impact on aviation safety"
+    columns:
+      - name: analysis_type
+        description: "Type of weather analysis"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['weather_severity', 'temporal_trends', 'aircraft_vulnerability', 'geographic_risk']
+      
+      - name: crash_count
+        description: "Number of crashes in this category"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: risk_score
+        description: "Calculated risk score"
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+  - name: mart_comprehensive_analysis_summary
+    description: "High-level summary combining all analytical insights"
+    columns:
+      - name: data_type
+        description: "Type of summary data"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['summary_metrics', 'key_insights', 'regional_analysis']
+      
+      - name: category
+        description: "Category of the analysis"
+        tests:
+          - not_null

@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: stg_weather_data
+    description: "Cleaned and standardized weather observation data"
+    columns:
+      - name: observation_datetime
+        description: "Parsed observation timestamp"
+        tests:
+          - not_null
+      
+      - name: observation_date
+        description: "Date of weather observation"
+        tests:
+          - not_null
+      
+      - name: weather_category
+        description: "Categorized weather condition"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['CLEAR', 'CLOUDY', 'RAINY', 'SNOWY', 'FOGGY', 'STORMY', 'WINDY', 'OTHER']
+      
+      - name: visibility_category
+        description: "Visibility category for aviation"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['EXCELLENT', 'GOOD', 'MODERATE', 'POOR', 'VERY_POOR', 'UNKNOWN']
+
+  - name: stg_airplane_crashes
+    description: "Cleaned and categorized airplane crash data"
+    columns:
+      - name: crash_date
+        description: "Date of the crash"
+        tests:
+          - not_null
+      
+      - name: crash_year
+        description: "Year of the crash"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 1908"
+      
+      - name: casualty_severity
+        description: "Categorized severity of casualties"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['NO_FATALITIES', 'LOW_CASUALTIES', 'MODERATE_CASUALTIES', 'HIGH_CASUALTIES', 'MASS_CASUALTY', 'UNKNOWN']
+      
+      - name: operator_type
+        description: "Type of aircraft operator"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['MILITARY', 'PRIVATE', 'CARGO', 'CHARTER', 'COMMERCIAL', 'UNKNOWN']
