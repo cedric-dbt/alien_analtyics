@@ -37,6 +37,14 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   alien_analytics:
-    # Applies to all files under models/example/
+    +database: CEDRIC_TURNER_DEMO
     staging:
-      +materialized: view
+      +schema: UFO_STAGING
+    core:
+      +schema: UFO_STAGING
+    mart:
+      +schema: UFO_MART
+
+snapshots:
+  +database: CEDRIC_TURNER_DEMO
+  +target_schema: UFO_SNAPSHOTS
