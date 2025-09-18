@@ -71,6 +71,7 @@ This project centralizes UFO sighting reports and enriches them with **historica
 python -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip
 pip install dbt-snowflake
+```
 
 ## Modeling Conventions
 
@@ -78,13 +79,9 @@ pip install dbt-snowflake
   Mirror raw sources with standardized column names, type casting, and surrogate keys.  
   Example: `stg_ufo_sightings` cleans and normalizes `UFO_SIGHTINGS_RAW`.
 
-- **Core Models (`*_core_*`)**  
+- **Intermediate Models (`*_int_*`)**  
   Represent cleaned, business-ready datasets (facts and dimensions).  
   Example: `ufo_core_sightings` with deduplicated records, valid timestamps, and consistent location fields.
-
-- **Analytics / Curated Models (`ufo_analytics_*`)**  
-  Final reporting/analysis-ready models that join across datasets for insights.  
-  Example: `ufo_analytics_sightings_weather` aligns sightings with nearest weather conditions.
 
 **Join Logic**  
 - **Time-based alignment:** UFO sighting timestamps are matched to the closest weather intervals (rounded to hour/day).  
