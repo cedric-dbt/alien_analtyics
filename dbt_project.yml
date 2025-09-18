@@ -40,9 +40,9 @@ models:
     +database: CEDRIC_TURNER_DEMO
     staging:
       +schema: UFO_STAGING
-    core:
-      +schema: UFO_STAGING
-    mart:
+    intermediate:
+      +schema: UFO_INTERMEDIATE
+    marts:
       +schema: UFO_MART
 
 snapshots:
