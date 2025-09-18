@@ -5,6 +5,12 @@
   )
 }}
 
+-- NOTE: This model previously raised division-by-zero errors when computing
+-- percentage metrics. We guard denominators with NULLIF(denominator, 0)
+-- so SQL does not error when a denominator is zero. For dashboard-friendliness
+-- we COALESCE the final percentage to 0 when the value is undefined.
+-- To change back to NULL (to indicate "undefined"), remove the outer COALESCE.
+
 with ufo_debunking as (
     select * from {{ ref('mart_ufo_debunking_analysis') }}
 ),
@@ -33,7 +39,7 @@ summary_metrics as (
         'overall_statistics' as metric_category,
         'potentially_explained_sightings' as metric_name,
         count(*) as metric_value,
-        round(count(*) * 100.0 / (select count(*) from {{ ref('int_ufo_location_enriched') }}), 2) as metric_percentage,
+    coalesce(round(count(*) * 100.0 / nullif((select count(*) from {{ ref('int_ufo_location_enriched') }}), 0), 2), 0) as metric_percentage,
         'UFO sightings with potential aircraft correlation' as description
     from ufo_debunking
     where analysis_type = 'case_details' and suspicion_level in ('HIGH_SUSPICION', 'MODERATE_SUSPICION')
@@ -44,7 +50,7 @@ summary_metrics as (
         'overall_statistics' as metric_category,
         'high_confidence_debunking' as metric_name,
         count(*) as metric_value,
-        round(count(*) * 100.0 / (select count(*) from ufo_debunking where analysis_type = 'case_details'), 2) as metric_percentage,
+    coalesce(round(count(*) * 100.0 / nullif((select count(*) from ufo_debunking where analysis_type = 'case_details'), 0), 2), 0) as metric_percentage,
         'High-confidence debunking cases with strong evidence' as description
     from ufo_debunking
     where analysis_type = 'case_details' and suspicion_level = 'HIGH_SUSPICION'
