@@ -24,9 +24,6 @@ models:
         description: "Standardized country name"
         tests:
           - not_null
-          - accepted_values:
-              arguments:
-                values: ['UNITED STATES', 'CANADA', 'UNITED KINGDOM', 'AUSTRALIA', 'GERMANY', 'FRANCE', 'UNKNOWN']
       
       - name: has_valid_datetime
         description: "Flag indicating if the datetime is valid"

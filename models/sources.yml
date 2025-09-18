@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: ufo
+    database: CEDRIC_TURNER_DEMO
+    schema: UFO_RAW
+    tables:
+      - name: UFO_SIGHTINGS_RAW
+        description: "UFO sightings loaded from scrubbed.csv"
+        columns:
+          - name: DATETIME
+            description: "Local datetime string, e.g., '10/10/1949 20:30'"
+          - name: CITY
+          - name: STATE
+          - name: COUNTRY
+          - name: SHAPE
+          - name: DURATION_SECONDS
+          - name: DURATION_HOURS_MIN
+          - name: COMMENTS
+          - name: DATE_POSTED
+          - name: LATITUDE
+          - name: LONGITUDE
+
+  - name: crashes
+    database: CEDRIC_TURNER_DEMO
+    schema: UFO_RAW
+    tables:
+      - name: AIRPLANE_CRASHES_SINCE_1908
+        description: "Airplane crashes since 1908"
+        columns:
+          - name: DATE
+          - name: TIME
+          - name: LOCATION
+          - name: OPERATOR
+          - name: ABOARD
+          - name: FATALITIES
+          - name: GROUND
+          - name: SUMMARY
+
+  - name: weather
+    database: CEDRIC_TURNER_DEMO
+    schema: UFO_RAW
+    tables:
+      - name: WEATHER_HISTORICAL_DATA
+        description: "Historical weather with parsed TIMESTAMP_NTZ"
+        columns:
+          - name: FORMATTED_DATE
+          - name: SUMMARY
+          - name: PRECIP_TYPE
+          - name: TEMPERATURE_C
+          - name: APPARENT_TEMPERATURE_C
+          - name: HUMIDITY
+          - name: WIND_SPEED_KM
+          - name: WIND_BEARING_DEGREES
+          - name: VISIBILITY_KM
+          - name: LOUD_COVER
+          - name: PRESSURE_MILLIBARS
+          - name: DAILY_SUMMARY

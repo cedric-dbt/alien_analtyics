@@ -1,6 +1,16 @@
 version: 2
 
 models:
+  - name: mart_ufo_with_weather
+    columns:
+      - name: event_date
+        tests: [not_null]
+
+  - name: mart_crashes_by_day
+    columns:
+      - name: event_date
+        tests: [not_null]
+
   - name: mart_ufo_sightings_by_country_time
     description: "UFO sightings aggregated by country and time periods for dashboard consumption"
     columns:
