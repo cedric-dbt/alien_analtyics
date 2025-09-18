@@ -11,7 +11,7 @@ with ufo_sightings as (
         comments,
         latitude,
         longitude
-    from {{ source('ufo', 'ufo_sightings_scrubbed') }}
+    from {{ source('ufo_raw', 'ufo_sightings_raw') }}
 )
 
 select * from ufo_sightings

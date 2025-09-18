@@ -6,7 +6,7 @@ sources:
     database: CEDRIC_TURNER_DEMO
     schema: UFO_RAW
     tables:
-      - name: ufo__sightings_raw
+      - name: ufo_sightings_raw
         description: Raw UFO sightings across the world
         columns:
           - name: datetime
