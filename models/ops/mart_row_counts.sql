@@ -1,4 +1,4 @@
-{{ config(materialized='table', description='Counts for key mart models for quick inspection') }}
+{{ config(materialized='table', description='Counts for key mart models for quick inspection', tags=['ops']) }}
 
 select
   'mart_comprehensive_analysis_summary_simple' as mart_name,
