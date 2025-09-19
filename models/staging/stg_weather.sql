@@ -15,7 +15,7 @@ with clean as (
     VISIBILITY_KM as visibility_km,
     PRESSURE_MILLIBARS as pressure_millibars,
     DAILY_SUMMARY as daily_summary
-  from {{ source('weather', 'WEATHER_HISTORICAL_DATA') }}
+  from {{ source('ufo_raw', 'weather_historical_data') }}
   where FORMATTED_DATE is not null
 )
 select * from clean
