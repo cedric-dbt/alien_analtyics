@@ -190,9 +190,9 @@ final_comprehensive_summary as (
         'summary_metrics' as data_type,
         metric_category as category,
         metric_name as subject,
-        metric_value as value_1,
-        metric_percentage as value_2,
-        null as value_3,
+        metric_value as metric_value,
+        metric_percentage as metric_percentage,
+        null as metric_aux,
         description as narrative,
         null as date_context,
         null as location_context
@@ -204,9 +204,9 @@ final_comprehensive_summary as (
         'key_insights' as data_type,
         insight_category as category,
         insight_type as subject,
-        insight_score as value_1,
-        null as value_2,
-        null as value_3,
+        insight_score as metric_value,
+        null as metric_percentage,
+        null as metric_aux,
         insight_description as narrative,
         insight_date as date_context,
         insight_subject as location_context
@@ -218,9 +218,9 @@ final_comprehensive_summary as (
         'regional_analysis' as data_type,
         regional_activity_level as category,
         region as subject,
-        suspicious_ufo_cases as value_1,
-        total_aviation_crashes as value_2,
-        avg_weather_risk as value_3,
+        suspicious_ufo_cases as metric_value,
+        total_aviation_crashes as metric_percentage,
+        avg_weather_risk as metric_aux,
         concat('Region with ', suspicious_ufo_cases, ' suspicious UFO cases and ', total_aviation_crashes, ' crashes') as narrative,
         null as date_context,
         region as location_context
@@ -228,4 +228,4 @@ final_comprehensive_summary as (
 )
 
 select * from final_comprehensive_summary
-order by data_type, category, value_1 desc
+order by data_type, category, metric_value desc

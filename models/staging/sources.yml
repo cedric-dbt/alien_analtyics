@@ -100,3 +100,14 @@ sources:
             description: Number of people killed on the ground
           - name: summary
             description: Narrative summary of the crash circumstances
+      - name: coordinates_data
+        description: Mapping of latitude/longitude to country and state (new table)
+        columns:
+          - name: country_code
+          - name: latitude
+          - name: longitude
+          - name: country
+          - name: usa_state_code
+          - name: usa_state_latitude
+          - name: usa_state_longitude
+          - name: usa_state

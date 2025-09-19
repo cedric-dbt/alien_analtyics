@@ -183,11 +183,7 @@ crashes_cleaned as (
         end as has_location_data
         
     from crashes_raw
-    where case 
-        when date is not null and trim(date) != '' and trim(date) != 'c: '
-        then try_to_date(date)
-        else null 
-    end is not null  -- Only include records with valid dates
+    -- Note: keep records even when date parsing fails. downstream models can filter using has_valid_date
 )
 
 select * from crashes_cleaned

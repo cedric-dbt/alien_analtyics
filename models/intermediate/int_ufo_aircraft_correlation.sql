@@ -87,19 +87,16 @@ ufo_crash_proximity as (
             else 'MINIMAL_MEDIA'
         end as media_attention_level
         
-    from ufo_sightings u
-    cross join airplane_crashes c
-    where 
-        -- Only consider crashes and sightings within reasonable time window
-        abs(datediff('day', c.crash_date, u.sighting_date)) <= 365
-        -- Only consider same country or nearby regions
-        and (
-            u.country_standardized = c.crash_country
-            or (u.country_standardized = 'UNITED STATES' and c.crash_country like '%USA%')
-            or (u.country_standardized = 'CANADA' and c.crash_country like '%CANADA%')
-        )
-        -- Exclude very old crashes (before modern UFO reporting)
-        and c.crash_year >= 1947  -- Start of modern UFO era
+        from ufo_sightings u
+        left join airplane_crashes c
+            on c.crash_year >= 1947
+            and c.crash_date is not null
+            and abs(datediff('day', c.crash_date, u.sighting_date)) <= 365
+            and (
+                        u.country_standardized = c.crash_country
+                        or (u.country_standardized = 'UNITED STATES' and c.crash_country like '%USA%')
+                        or (u.country_standardized = 'CANADA' and c.crash_country like '%CANADA%')
+                    )
 ),
 
 -- Add closest crash details using window functions

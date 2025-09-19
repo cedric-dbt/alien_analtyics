@@ -27,6 +27,8 @@ location_stats as (
 enriched_sightings as (
     select 
         cs.*,
+        co.lookup_country as coord_lookup_country,
+        co.lookup_state as coord_lookup_state,
         ls.city_sighting_count,
         ls.first_sighting_date as city_first_sighting,
         ls.last_sighting_date as city_last_sighting,
@@ -66,6 +68,11 @@ enriched_sightings as (
         on cs.country_standardized = ls.country_standardized
         and cs.state_clean = ls.state_clean
         and cs.city_clean = ls.city_clean
+        left join (
+                select lat_bucket, lon_bucket, coord_country as lookup_country, coord_usa_state as lookup_state
+                from {{ ref('int_coordinates_lookup') }}
+        ) co
+            on round(cs.latitude_clean,1) = co.lat_bucket and round(cs.longitude_clean,1) = co.lon_bucket
 )
 
 select * from enriched_sightings

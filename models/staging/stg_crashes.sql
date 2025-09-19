@@ -1,34 +1,18 @@
 {{ config(materialized='view') }}
 
-with base as (
-  select
-    DATE as date_col,
-    TIME as time_col,
-    LOCATION,
-    OPERATOR,
-    try_to_number(ABOARD) as aboard,
-    try_to_number(FATALITIES) as fatalities,
-    try_to_number(GROUND) as ground,
-    SUMMARY,
-    -- Build timestamp; TIME may be null/blank
-    case
-      when nullif(TIME,'') is not null
-        then try_to_timestamp_ntz(to_varchar(DATE, 'MM/DD/YYYY') || ' ' || TIME, 'MM/DD/YYYY HH24:MI')
-      else try_to_timestamp_ntz(to_varchar(DATE, 'MM/DD/YYYY') || ' 00:00', 'MM/DD/YYYY HH24:MI')
-    end as event_datetime
-  from {{ source('crashes', 'AIRPLANE_CRASHES_SINCE_1908') }}
-),
-clean as (
-  select
-    event_datetime,
-    date_trunc('day', event_datetime) as event_date,
-    LOCATION as location,
-    OPERATOR as operator,
-    aboard, fatalities, ground, SUMMARY as summary
-  from base
-  where event_datetime is not null
-)
+-- Compatibility thin view: select canonical fields from the enriched `stg_airplane_crashes` staging model.
+-- This avoids duplicating parsing/cleaning logic and ensures downstream models that depend on
+-- `stg_crashes` continue to work.
+
 select
-  {{ dbt_utils.generate_surrogate_key(['event_date','location']) }} as location_day_key,
-  *
-from clean
+  {{ dbt_utils.generate_surrogate_key(['crash_date','crash_location']) }} as location_day_key,
+  crash_date as event_date,
+  crash_time_raw as time_col,
+  crash_location as location,
+  airline_operator as operator,
+  people_aboard as aboard,
+  total_fatalities as fatalities,
+  ground_fatalities as ground,
+  crash_summary as summary,
+  has_valid_date
+from {{ ref('stg_airplane_crashes') }}
