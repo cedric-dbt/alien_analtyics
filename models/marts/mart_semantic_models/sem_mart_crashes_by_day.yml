@@ -1,0 +1,38 @@
+version: 2
+
+semantic_models:
+  - name: crashes_by_day
+    description: Daily aggregated crash data with weather context.
+    model: ref('mart_crashes_by_day')
+    defaults:
+      agg_time_dimension: event_date
+    entities:
+      - name: crash_day
+        type: primary
+        expr: event_date
+    dimensions:
+      - name: event_date
+        expr: event_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: weather_summary
+        expr: any_weather_summary   # change if your column name differs
+        type: categorical
+    measures:
+      - name: crash_events_sum
+        agg: sum
+        expr: crash_events
+        create_metric: true
+      - name: total_fatalities_sum
+        agg: sum
+        expr: total_fatalities
+        create_metric: true
+      - name: avg_temperature_celsius
+        agg: average
+        expr: avg_temp_c
+        create_metric: true
+      - name: events_count
+        agg: count
+        expr: event_date
+        create_metric: true
