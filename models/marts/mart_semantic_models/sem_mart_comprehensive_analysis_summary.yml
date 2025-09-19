@@ -1,0 +1,52 @@
+version: 2
+
+semantic_models:
+  - name: comprehensive_analysis_summary
+    description: Comprehensive summary combining UFO analysis with weather/aviation insights.
+    model: ref('mart_comprehensive_analysis_summary')
+    defaults:
+      agg_time_dimension: insight_date
+    entities:
+      - name: region
+        type: primary
+        expr: location_context         # <-- change if your key is different
+    dimensions:
+      - name: insight_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: data_type
+        type: categorical
+      - name: category
+        type: categorical
+      - name: location_context
+        type: categorical
+    measures:
+      - name: metric_value             # canonical metric lives here
+        agg: sum
+        create_metric: true
+      - name: metric_percentage_avg
+        agg: average
+        expr: metric_percentage        # <-- if your column is named metric_percentage
+        create_metric: true
+      - name: insight_score_avg
+        agg: average
+        expr: insight_score
+        create_metric: true
+      - name: suspicious_ufo_cases_sum
+        agg: sum
+        expr: suspicious_ufo_cases
+        create_metric: true
+      - name: total_aviation_crashes_sum
+        agg: sum
+        expr: total_aviation_crashes
+        create_metric: true
+      - name: avg_weather_risk
+        agg: average
+        expr: avg_weather_risk
+        create_metric: true
+      - name: region_count
+        agg: count
+        expr: location_context
+        create_metric: true
+

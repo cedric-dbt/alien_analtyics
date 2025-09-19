@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: mf_time_spine              # MUST match your SQL model filename (mf_time_spine.sql)
+    description: Daily time spine (one row per day from 1900-01-01 through today).
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        description: The primary day-grain column for the time spine.
+        granularity: day
