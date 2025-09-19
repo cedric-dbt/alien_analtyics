@@ -1,0 +1,59 @@
+semantic_models:
+- name: mart_ufo_debunking_analysis
+  description: Analysis of UFO sightings that may be explained by aircraft incidents
+    - the debunking dashboard
+  model: ref('mart_ufo_debunking_analysis')
+  defaults:
+    agg_time_dimension: event_date
+  entities:
+  - name: record
+    type: primary
+    expr: record_id
+  - name: aircraft_type
+    type: foreign
+    expr: related_aircraft
+  dimensions:
+  - name: analysis_type
+    description: Type of analysis record
+    type: categorical
+  - name: event_date
+    description: Date of the event
+    type: time
+    type_params:
+      time_granularity: day
+  - name: location
+    description: Country where the UFO sighting occurred
+    type: categorical
+  - name: sub_location
+    description: State where the UFO sighting occurred
+    type: categorical
+  - name: suspicion_level
+    description: Level of suspicion for false positive
+    type: categorical
+  - name: evidence_strength
+    description: Strength of debunking evidence
+    type: categorical
+  - name: explanation
+    description: Narrative explanation for the debunking
+    type: categorical
+  measures:
+  - name: days_to_incident
+    description: Average days to the closest incident
+    agg: average
+    create_metric: true
+  - name: correlation_score
+    description: Maximum correlation score for the sighting
+    agg: max
+    create_metric: true
+  - name: summary_metric
+    description: Summary metric for the analysis type
+    agg: sum
+    create_metric: true
+  - name: count_record
+    agg: count
+    create_metric: true
+    expr: record_id
+  - name: count_aircraft_type
+    agg: count_distinct
+    create_metric: true
+    expr: related_aircraft

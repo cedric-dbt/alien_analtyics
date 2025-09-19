@@ -1,0 +1,111 @@
+semantic_models:
+- name: mart_ufo_dashboard_summary
+  description: High-level summary metrics for dashboard KPIs
+  model: ref('mart_ufo_dashboard_summary')
+  defaults:
+    agg_time_dimension: earliest_sighting
+  entities:
+  - name: country
+    type: foreign
+    expr: country
+  - name: region
+    type: foreign
+    expr: region
+  dimensions:
+  - name: metric_type
+    description: Type of summary metric
+    type: categorical
+  - name: time_period
+    description: Time period of the summary
+    type: categorical
+  - name: earliest_sighting
+    description: Earliest sighting date
+    type: time
+    type_params:
+      time_granularity: day
+  - name: latest_sighting
+    description: Latest sighting date
+    type: time
+    type_params:
+      time_granularity: day
+  - name: most_common_shape
+    description: Most common shape observed
+    type: categorical
+  measures:
+  - name: total_sightings
+    description: Total number of sightings
+    agg: sum
+    create_metric: true
+  - name: unique_countries
+    description: Number of unique countries
+    agg: count_distinct
+    create_metric: true
+  - name: unique_states
+    description: Number of unique states
+    agg: count_distinct
+    create_metric: true
+  - name: unique_cities
+    description: Number of unique cities
+    agg: count_distinct
+    create_metric: true
+  - name: years_of_data
+    description: Number of years of data
+    agg: max
+    create_metric: true
+  - name: unique_shapes
+    description: Number of unique shapes
+    agg: count_distinct
+    create_metric: true
+  - name: avg_duration_seconds
+    description: Average duration of sightings in seconds
+    agg: average
+    create_metric: true
+  - name: median_duration_seconds
+    description: Median duration of sightings in seconds
+    agg: median
+    create_metric: true
+  - name: max_duration_seconds
+    description: Maximum duration of sightings in seconds
+    agg: max
+    create_metric: true
+  - name: sightings_with_coordinates
+    description: Number of sightings with valid coordinates
+    agg: sum
+    create_metric: true
+  - name: pct_with_coordinates
+    description: Percentage of sightings with valid coordinates
+    agg: average
+    create_metric: true
+  - name: sightings_with_comments
+    description: Number of sightings with comments
+    agg: sum
+    create_metric: true
+  - name: pct_with_comments
+    description: Percentage of sightings with comments
+    agg: average
+    create_metric: true
+  - name: sightings_last_year
+    description: Number of sightings in the last year
+    agg: sum
+    create_metric: true
+  - name: sightings_last_5_years
+    description: Number of sightings in the last 5 years
+    agg: sum
+    create_metric: true
+  - name: sightings_last_10_years
+    description: Number of sightings in the last 10 years
+    agg: sum
+    create_metric: true
+  - name: avg_sightings_per_year
+    description: Average number of sightings per year
+    agg: average
+    create_metric: true
+  - name: count_country
+    agg: count_distinct
+    create_metric: true
+    expr: country
+  - name: count_region
+    agg: count_distinct
+    create_metric: true
+    expr: region
+  primary_entity: mart_ufo_dashboard_summary

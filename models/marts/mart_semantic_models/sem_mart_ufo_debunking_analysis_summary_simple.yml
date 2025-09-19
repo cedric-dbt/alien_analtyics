@@ -1,0 +1,51 @@
+semantic_models:
+- name: mart_ufo_debunking_analysis_simple
+  description: Simplified UFO debunking analysis showing potential false positives
+  model: ref('mart_ufo_debunking_analysis_simple')
+  defaults:
+    agg_time_dimension: date
+  entities:
+  - name: sighting
+    type: primary
+    expr: sighting_id
+  dimensions:
+  - name: date
+    expr: sighting_date
+    type: time
+    type_params:
+      time_granularity: day
+  - name: ufo_country
+    type: categorical
+  - name: ufo_state
+    type: categorical
+  - name: ufo_city
+    type: categorical
+  - name: ufo_shape
+    type: categorical
+  - name: false_positive_likelihood
+    type: categorical
+  - name: debunking_assessment
+    type: categorical
+  measures:
+  - name: nearby_crashes_count
+    agg: sum
+    create_metric: true
+  - name: crashes_within_week
+    agg: sum
+    create_metric: true
+  - name: crashes_within_month
+    agg: sum
+    create_metric: true
+  - name: closest_crash_days
+    agg: min
+    create_metric: true
+  - name: max_correlation_score
+    agg: max
+    create_metric: true
+  - name: has_aircraft_like_features
+    agg: sum_boolean
+    create_metric: true
+  - name: count_sighting
+    agg: count
+    create_metric: true
+    expr: sighting_id
