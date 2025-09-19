@@ -1,0 +1,27 @@
+{
+    "servers": {
+        "dbt-mcp-alien-analytics": {
+        "command": "/Users/cedricturner/.dbt-mcp/.venv/bin/mcp",
+        "args": [
+            "run",
+            "/Users/cedricturner/.dbt-mcp/.venv/lib/python3.13/site-packages/dbt_mcp/main.py"
+        ],
+        "env": {
+            "DBT_HOST": "us1.dbt.com",
+            "MULTICELL_ACCOUNT_PREFIX": "lf920",
+            "DBT_TOKEN": "dbtc_FPeSjK4F9f1ilA5ydPsd0Bd3SJz0LNqq1bNDLtcBZ5eh_f-QiQ",
+            "DBT_PROD_ENV_ID": "70471823482011",
+            "DBT_PROJECT_DIR": "/Users/cedricturner/dbt-demos/alien_analtyics"
+        }
+        },
+        "filesystem": {
+        "command": "npx",
+        "args": [
+            "-y",
+            "@modelcontextprotocol/server-filesystem",
+            "/Users/cedricturner/Desktop",
+            "/Users/cedricturner/Downloads"
+        ]
+    }
+  }
+}

@@ -3,11 +3,7 @@
 with base as (
   select
     datetime as datetime_raw,
-    coalesce(
-      try_to_timestamp_ntz(datetime, 'MM/DD/YYYY HH24:MI'),
-      try_to_timestamp_ntz(datetime),
-      cast(date_posted as timestamp_ntz)
-    ) as event_datetime,
+    {{ coerce_to_timestamp('datetime', 'date_posted') }} as event_datetime,
     nullif(CITY, '') as city,
     nullif(STATE, '') as state,
     nullif(COUNTRY, '') as country,
