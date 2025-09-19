@@ -26,9 +26,22 @@ non_us_coords as (
   from {{ ref('stg_coordinates_non_us') }}
 )
 
-select distinct lat_bucket, lon_bucket, coord_country, coord_usa_state, country_code
+-- If multiple source rows map to the same lat/lon bucket, prefer the US-state
+-- mapping when present. Use ROW_NUMBER() to pick a single canonical mapping
+-- per (lat_bucket, lon_bucket).
+select lat_bucket, lon_bucket, coord_country, coord_usa_state, country_code
 from (
-  select * from us_coords
-  union all
-  select * from non_us_coords
-) t
+  select
+    t.*,
+    row_number() over (
+      partition by lat_bucket, lon_bucket
+      order by case when coord_usa_state is not null then 1 else 0 end desc,
+               coord_country asc
+    ) as rn
+  from (
+    select * from us_coords
+    union all
+    select * from non_us_coords
+  ) t
+) final
+where rn = 1
