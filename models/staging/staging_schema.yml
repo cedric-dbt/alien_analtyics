@@ -58,3 +58,133 @@ models:
           - accepted_values:
               arguments:
                 values: ['MILITARY', 'PRIVATE', 'CARGO', 'CHARTER', 'COMMERCIAL', 'UNKNOWN']
+
+  - name: stg_airlines_flights
+    description: "Cleaned and standardized commercial airline flight data"
+    columns:
+      - name: flight_record_id
+        description: "Unique identifier for each flight record"
+        tests:
+          - not_null
+          - unique
+      
+      - name: airline_name
+        description: "Standardized airline name"
+        tests:
+          - not_null
+      
+      - name: flight_number
+        description: "Flight number or identifier"
+      
+      - name: departure_city
+        description: "Standardized departure city name"
+        tests:
+          - not_null
+      
+      - name: arrival_city
+        description: "Standardized arrival city name"
+        tests:
+          - not_null
+      
+      - name: flight_route
+        description: "Standardized route in format 'DEPARTURE -> ARRIVAL'"
+        tests:
+          - not_null
+      
+      - name: departure_time_parsed
+        description: "Parsed departure time"
+      
+      - name: departure_hour
+        description: "Hour of departure (0-23)"
+        tests:
+          - dbt_utils.accepted_range:
+              config:
+                where: "departure_hour is not null"
+              arguments:
+                min_value: 0
+                max_value: 23
+      
+      - name: number_of_stops
+        description: "Number of intermediate stops"
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: stop_category
+        description: "Categorized number of stops"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['NONSTOP', 'ONE_STOP', 'MULTIPLE_STOPS', 'UNKNOWN']
+      
+      - name: flight_duration_hours
+        description: "Flight duration in hours (validated)"
+        tests:
+          - dbt_utils.accepted_range:
+              config:
+                where: "flight_duration_hours is not null"
+              arguments:
+                min_value: 0
+                max_value: 24
+      
+      - name: flight_duration_category
+        description: "Categorized flight duration"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['SHORT_HAUL', 'MEDIUM_HAUL', 'LONG_HAUL', 'ULTRA_LONG_HAUL', 'UNKNOWN']
+      
+      - name: travel_class_category
+        description: "Standardized travel class"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['ECONOMY', 'BUSINESS', 'FIRST', 'PREMIUM_ECONOMY', 'UNKNOWN']
+      
+      - name: booking_lead_days
+        description: "Days between booking and departure"
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: booking_timing_category
+        description: "Categorized booking timing"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['LAST_MINUTE', 'SHORT_NOTICE', 'ADVANCE', 'EARLY_BOOKING', 'UNKNOWN']
+      
+      - name: ticket_price
+        description: "Validated ticket price"
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+      
+      - name: price_category
+        description: "Categorized price range"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['BUDGET', 'MODERATE', 'PREMIUM', 'LUXURY', 'UNKNOWN']
+      
+      - name: departure_time_of_day
+        description: "Time of day category for departure"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['MORNING', 'AFTERNOON', 'EVENING', 'NIGHT', 'UNKNOWN']
+      
+      - name: airline_region
+        description: "Regional categorization of airline"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['US_MAJOR', 'EUROPEAN', 'MIDDLE_EAST', 'ASIAN', 'OTHER']
+      
+      - name: has_complete_route
+        description: "Data quality flag for complete route information"
+        tests:
+          - not_null
