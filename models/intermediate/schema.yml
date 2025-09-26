@@ -82,3 +82,40 @@ models:
           - accepted_values:
               arguments:
                 values: ['VERY HIGH ACTIVITY', 'HIGH ACTIVITY', 'MEDIUM ACTIVITY', 'LOW ACTIVITY', 'MINIMAL ACTIVITY']
+
+  - name: int_flight_volume_analysis
+    description: "Flight volume analysis aggregated by route, airline, and time dimensions"
+    columns:
+      - name: departure_city
+        description: "Origin city for flights"
+        tests:
+          - not_null
+      
+      - name: arrival_city
+        description: "Destination city for flights"
+        tests:
+          - not_null
+      
+      - name: flight_route
+        description: "Full route description"
+        tests:
+          - not_null
+      
+      - name: total_flights
+        description: "Total number of flights for this combination"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+      
+      - name: avg_flight_duration
+        description: "Average flight duration in hours"
+      
+      - name: nonstop_percentage
+        description: "Percentage of flights that are nonstop"
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 100

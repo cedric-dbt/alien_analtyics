@@ -111,3 +111,35 @@ sources:
           - name: usa_state_latitude
           - name: usa_state_longitude
           - name: usa_state
+
+      - name: airlines_flights_data
+        description: >
+          Commercial airline flight data including routes, schedules, and pricing.
+          Contains flight information such as airline, departure/arrival times, 
+          cities, duration, and ticket prices. Useful for correlating UFO sightings 
+          with commercial aviation traffic patterns.
+        columns:
+          - name: index
+            description: Unique row identifier
+          - name: airline
+            description: Name of the airline operating the flight
+          - name: flight
+            description: Flight number or identifier
+          - name: source_city
+            description: Departure/origin city
+          - name: departure_time
+            description: Scheduled departure time
+          - name: stops
+            description: Number of stops or intermediate airports
+          - name: arrival_time
+            description: Scheduled arrival time
+          - name: destination_city
+            description: Arrival/destination city
+          - name: class
+            description: Travel class (e.g., Economy, Business, First)
+          - name: duration
+            description: Flight duration in hours (decimal)
+          - name: days_left
+            description: Days remaining until departure (booking lead time)
+          - name: price
+            description: Ticket price in currency units
